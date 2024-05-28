@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const foodRouter = require("./routes/food");
+
+require("dotenv").config();
+
 const PORT = process.env.PORT || 3000;
 
 const mongoose = require("mongoose");
@@ -8,8 +11,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 // Define the database URL to connect to.
 
-const mongoDB =
-  "mongodb+srv://chleighton1:qSsEYn1hrF616vLN@cluster0.ingruox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const mongoDB = process.env.MONGODB_URI;
 
 // Wait for database to connect, logging an error if there is a problem
 main().catch((err) => console.log(err));
