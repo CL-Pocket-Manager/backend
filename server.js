@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const foodRouter = require("./routes/food");
+const itemRouter = require("./routes/items");
 
 require("dotenv").config();
 
@@ -27,6 +28,7 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.use(express.json());
 app.use("/food", foodRouter);
+app.use("/items", itemRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
