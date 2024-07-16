@@ -7,15 +7,15 @@ const itemSchema = new Schema(
     name: { type: String, required: [true, "Name field is required"] },
     description: { type: String, required: false },
     image: { type: String, required: false },
-    distributor: {
-      type: String,
-      required: true,
-      enum: ["Chef's Warehouse", "Southern", "Empire", "Internal", "Other"],
-    },
     itemType: {
       type: String,
       required: true,
-      enum: ["Food", "Alcohol", "Supplies", "Beverage"],
+      enum: [
+        "Food Item",
+        "Alcoholic Beverage",
+        "Non-Alcoholic Beverage",
+        "Supplies",
+      ],
     }, // 'Food' items will be created directly from this model
   },
   { discriminatorKey: "itemType" }
@@ -33,6 +33,6 @@ const alcoholSchema = new Schema({
   alcoholContent: { type: Number, required: true },
 });
 
-const AlcoholItem = Item.discriminator("Alcohol", alcoholSchema);
+const AlcoholItem = Item.discriminator("Alcoholic Beverage", alcoholSchema);
 
 module.exports = { Item, itemSchema, AlcoholItem, alcoholSchema }; // Export alcoholSchema
