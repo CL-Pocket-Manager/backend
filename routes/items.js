@@ -8,8 +8,14 @@ const item_controller = require("../controllers/itemController");
 // Get all items
 router.get("/all", item_controller.item_list);
 
+// Get all items with just id and name
+router.get("/all-short", item_controller.item_list_short);
+
 // Create an item
 router.post("/create", item_controller.item_create_post);
+
+// Search for an item by keyword
+router.get("/search/:keyword", item_controller.item_search);
 
 // Update an item
 router.put("/:id/update", item_controller.item_update_put);

@@ -6,11 +6,31 @@ exports.item_list = async (req, res, next) => {
   res.json(items);
 };
 
+// Return all items with just id and name
+exports.item_list_short = async (req, res, next) => {
+  const items = await Item.find({}, "id name");
+  res.json(items);
+};
+
 // Display detail page for a specific Item.
 exports.item_detail = async (req, res, next) => {
   const item = await Item.findById(req.params.id);
   console.log(item);
   res.json(item);
+};
+
+// Search for an item by keyword.
+exports.item_search = async (req, res, next) => {
+  try {
+    const items = await Item.find({
+      name: { $regex: req.params.keyword, $options: "i" }, // Case-insensitive search
+    });
+
+    res.json(items);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 };
 
 // Handle Item create on POST.
