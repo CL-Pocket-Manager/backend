@@ -19,6 +19,12 @@ exports.item_detail = async (req, res, next) => {
   res.json(item);
 };
 
+// Return individual item by ID with just id and name
+exports.item_detail_short = async (req, res, next) => {
+  const item = await Item.findById(req.params.id, "id name");
+  res.json(item);
+};
+
 // Search for an item by keyword.
 exports.item_search = async (req, res, next) => {
   try {

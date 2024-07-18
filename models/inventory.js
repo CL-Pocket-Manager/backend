@@ -17,11 +17,7 @@ const inventoryItemSchema = new Schema({
   unitOfMeasure: { type: String, required: true },
   qtyPerUnit: { type: Number, required: true },
   costPerUnit: { type: Number, required: true },
-  distributor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Distributor",
-    required: true,
-  },
+  distributor: { type: String, required: true },
   par: { type: Number, required: true },
   stock: { type: Number, required: false },
 });

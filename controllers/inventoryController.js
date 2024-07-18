@@ -1,4 +1,5 @@
 const { Inventory } = require("../models/inventory");
+const { Item } = require("../models/item");
 
 // Display list of all Inventory's with only id and name.
 exports.inventory_list = async (req, res, next) => {
@@ -62,6 +63,10 @@ exports.inventory_delete = async (req, res, next) => {
 
 // Add an item to an Inventory
 exports.inventory_add_item = async (req, res, next) => {
+  const inventoryItem = Item.findById(req.body.item);
+
+  const onModel =
+    inventoryItem.itemType === "Alcoholic Beverage" ? "AlcoholItem" : "Item";
   const inventory = await Inventory.findById(req.params.id);
 
   if (!inventory) {
@@ -70,9 +75,11 @@ exports.inventory_add_item = async (req, res, next) => {
 
   const item = {
     item: req.body.item,
-    onModel: req.body.onModel,
-    unit: req.body.unit,
+    onModel: onModel,
+    unitOfMeasure: req.body.unitOfMeasure,
     qtyPerUnit: req.body.qtyPerUnit,
+    costPerUnit: req.body.costPerUnit,
+    distributor: req.body.distributor,
     par: req.body.par,
     stock: req.body.stock,
   };

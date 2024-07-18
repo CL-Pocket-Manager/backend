@@ -29,6 +29,9 @@ router.put("/alcohol/:id/update", item_controller.alcohol_item_update_put);
 // Get an item by ID
 router.get("/:id", item_controller.item_detail);
 
+// Get an item by ID with just id and name
+router.get("/:id/short", item_controller.item_detail_short);
+
 // Delete an item
 router.delete("/:id/delete", item_controller.item_delete);
 
