@@ -113,27 +113,8 @@ exports.inventory_get_item = async (req, res, next) => {
   res.json(item);
 };
 
-// Remove an item from an Inventory
-exports.inventory_remove_item = async (req, res, next) => {
-  const inventory = await Inventory.findById(req.params.inventoryId);
-
-  if (!inventory) {
-    return next(new Error("Inventory not found"));
-  }
-
-  inventory.items.id(req.params.itemId).remove();
-
-  const savedInventory = await inventory.save();
-
-  if (!savedInventory) {
-    return next(new Error("Failed to remove item from inventory"));
-  }
-
-  res.json(savedInventory);
-};
-
-// Edit an item in an Inventory
-exports.inventory_edit_item = async (req, res, next) => {
+// Update an item in an Inventory
+exports.inventory_update_item = async (req, res, next) => {
   const inventory = await Inventory.findById(req.params.inventoryId);
 
   if (!inventory) {
@@ -155,4 +136,29 @@ exports.inventory_edit_item = async (req, res, next) => {
   }
 
   res.json(savedInventory);
+};
+
+// Remove an item from an Inventory
+exports.inventory_remove_item = async (req, res, next) => {
+  try {
+    const inventoryId = req.params.inventoryId;
+    const itemId = req.params.itemId;
+
+    // Use $pull to remove the item from the items array
+    const updatedInventory = await Inventory.findByIdAndUpdate(
+      inventoryId,
+      { $pull: { items: { _id: itemId } } },
+      { new: true } // Return the modified document rather than the original
+    );
+
+    if (!updatedInventory) {
+      return next(
+        new Error("Failed to remove item from inventory or inventory not found")
+      );
+    }
+
+    res.json(updatedInventory);
+  } catch (error) {
+    next(error);
+  }
 };

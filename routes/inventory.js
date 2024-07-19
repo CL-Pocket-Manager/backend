@@ -28,14 +28,14 @@ router.get(
   inventory_controller.inventory_get_item
 );
 
-// Edit an item in an inventory
+// Update an item in an inventory
 router.put(
-  "/:inventoryId/edit-item/:itemId",
-  inventory_controller.inventory_edit_item
+  "/:inventoryId/update-item/:itemId",
+  inventory_controller.inventory_update_item
 );
 
 // Remove an item from an inventory
-router.put(
+router.delete(
   "/:inventoryId/remove-item/:itemId",
   inventory_controller.inventory_remove_item
 );
