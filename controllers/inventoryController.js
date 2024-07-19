@@ -9,7 +9,7 @@ exports.inventory_list = async (req, res, next) => {
 
 // Display detail page for a specific Inventory.
 exports.inventory_detail = async (req, res, next) => {
-  const inventory = await Inventory.findById(req.params.id);
+  const inventory = await Inventory.findById(req.params.inventoryId);
 
   if (!inventory) {
     return next(new Error("Inventory not found"));
@@ -36,7 +36,7 @@ exports.inventory_create_post = async (req, res, next) => {
 // Edit an Inventory name
 exports.inventory_update_put = async (req, res, next) => {
   const updatedInventory = await Inventory.findByIdAndUpdate(
-    req.params.id,
+    req.params.inventoryId,
     req.body,
     {
       new: true,
@@ -52,7 +52,7 @@ exports.inventory_update_put = async (req, res, next) => {
 
 // Delete an Inventory
 exports.inventory_delete = async (req, res, next) => {
-  const inventory = await Inventory.findByIdAndDelete(req.params.id);
+  const inventory = await Inventory.findByIdAndDelete(req.params.inventoryId);
 
   if (!inventory) {
     return next(new Error("Failed to delete inventory"));
@@ -63,11 +63,12 @@ exports.inventory_delete = async (req, res, next) => {
 
 // Add an item to an Inventory
 exports.inventory_add_item = async (req, res, next) => {
-  const inventoryItem = Item.findById(req.body.item);
+  const inventoryItem = await Item.findById(req.body.item);
+  console.log(inventoryItem);
 
   const onModel =
-    inventoryItem.itemType === "Alcoholic Beverage" ? "AlcoholItem" : "Item";
-  const inventory = await Inventory.findById(req.params.id);
+    inventoryItem.itemType == "Alcoholic Beverage" ? "AlcoholItem" : "Item";
+  const inventory = await Inventory.findById(req.params.inventoryId);
 
   if (!inventory) {
     return next(new Error("Inventory not found"));
@@ -95,9 +96,26 @@ exports.inventory_add_item = async (req, res, next) => {
   res.status(201).json(savedInventory);
 };
 
+// Get an item from an Inventory
+exports.inventory_get_item = async (req, res, next) => {
+  const inventory = await Inventory.findById(req.params.inventoryId);
+
+  if (!inventory) {
+    return next(new Error("Inventory not found"));
+  }
+
+  const item = inventory.items.id(req.params.itemId);
+
+  if (!item) {
+    return next(new Error("Item not found"));
+  }
+
+  res.json(item);
+};
+
 // Remove an item from an Inventory
 exports.inventory_remove_item = async (req, res, next) => {
-  const inventory = await Inventory.findById(req.params.id);
+  const inventory = await Inventory.findById(req.params.inventoryId);
 
   if (!inventory) {
     return next(new Error("Inventory not found"));
@@ -116,7 +134,7 @@ exports.inventory_remove_item = async (req, res, next) => {
 
 // Edit an item in an Inventory
 exports.inventory_edit_item = async (req, res, next) => {
-  const inventory = await Inventory.findById(req.params.id);
+  const inventory = await Inventory.findById(req.params.inventoryId);
 
   if (!inventory) {
     return next(new Error("Inventory not found"));

@@ -17,7 +17,7 @@ const inventoryItemSchema = new Schema({
   unitOfMeasure: { type: String, required: true },
   qtyPerUnit: { type: Number, required: true },
   costPerUnit: { type: Number, required: true },
-  distributor: { type: String, required: true },
+  distributor: { type: Schema.Types.ObjectId, required: true },
   par: { type: Number, required: true },
   stock: { type: Number, required: false },
 });

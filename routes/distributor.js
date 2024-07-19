@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const distriburorController = require("../controllers/distributorController");
+const distributorController = require("../controllers/distributorController");
 
 /// DISTRIBUTOR ROUTES ///
 // Get all distributors
-router.get("/all", distriburorController.distributor_list);
+router.get("/all", distributorController.distributor_list);
 
-// Add a distributor
-router.post("/add", distriburorController.distributor_add);
+// Create a distributor
+router.post("/create", distributorController.distributor_create);
 
 module.exports = router;
