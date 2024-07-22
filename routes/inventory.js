@@ -13,8 +13,11 @@ router.get("/:inventoryId", inventory_controller.inventory_detail);
 // Create an inventory
 router.post("/create", inventory_controller.inventory_create_post);
 
-// Update an inventory
-router.put("/:inventoryId/update", inventory_controller.inventory_update_put);
+// Update an inventory name
+router.put(
+  "/:inventoryId/update-name",
+  inventory_controller.inventory_update_put
+);
 
 // Delete an inventory
 router.delete("/:inventoryId/delete", inventory_controller.inventory_delete);
