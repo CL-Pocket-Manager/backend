@@ -33,4 +33,4 @@ const inventorySchema = new Schema({
 
 const Inventory = mongoose.model("Inventory", inventorySchema);
 
-module.exports = { Inventory }; // Export the Inventory model
+module.exports = { Inventory, inventoryItemSchema }; // Export the Inventory model

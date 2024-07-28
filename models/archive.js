@@ -1,10 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { foodSchema } = require("./food"); // Import foodSchema from food.js
+const { inventoryItemSchema } = require("./inventory"); // Import the inventoryItemSchema
 
+// Archive schema
 const archiveSchema = new Schema({
-  date: { type: Date, default: Date.now },
-  archive: [foodSchema],
+  inventoryName: { type: String, required: true },
+  items: {
+    type: [inventoryItemSchema],
+    default: [],
+  },
+  archiveDate: { type: Date, required: true, default: Date.now },
 });
 
-module.exports = mongoose.model("Archive", archiveSchema);
+const Archive = mongoose.model("Archive", archiveSchema);
+
+module.exports = { Archive };
