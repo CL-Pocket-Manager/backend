@@ -4,6 +4,7 @@ const foodRouter = require("./routes/food");
 const itemRouter = require("./routes/items");
 const inventoryRouter = require("./routes/inventory");
 const distributorRouter = require("./routes/distributor");
+const archiveRouter = require("./routes/archive");
 
 require("dotenv").config();
 
@@ -33,6 +34,7 @@ app.use("/food", foodRouter);
 app.use("/items", itemRouter);
 app.use("/inventory", inventoryRouter);
 app.use("/distributor", distributorRouter);
+app.use("/archive", archiveRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
