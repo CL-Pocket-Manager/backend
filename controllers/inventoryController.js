@@ -63,37 +63,49 @@ exports.inventory_delete = async (req, res, next) => {
 
 // Add an item to an Inventory
 exports.inventory_add_item = async (req, res, next) => {
-  const inventoryItem = await Item.findById(req.body.item);
-  console.log(inventoryItem);
+  try {
+    const inventoryItem = await Item.findById(req.body.item);
+    console.log(inventoryItem);
 
-  const onModel =
-    inventoryItem.itemType == "Alcoholic Beverage" ? "AlcoholItem" : "Item";
-  const inventory = await Inventory.findById(req.params.inventoryId);
+    if (!inventoryItem) {
+      return next(new Error("Item not found"));
+    }
 
-  if (!inventory) {
-    return next(new Error("Inventory not found"));
+    const onModel =
+      inventoryItem.itemType == "Alcoholic Beverage" ? "AlcoholItem" : "Item";
+
+    // Extract inventoryId from request parameters
+    const inventoryId = req.params.inventoryId;
+
+    if (!inventoryId) {
+      throw new Error("Inventory ID is undefined");
+    }
+
+    const inventory = await Inventory.findById(inventoryId);
+
+    if (!inventory) {
+      return next(new Error("Inventory not found"));
+    }
+
+    const item = {
+      item: req.body.item,
+      onModel: onModel,
+      unitOfMeasure: req.body.unitOfMeasure,
+      qtyPerUnit: req.body.qtyPerUnit,
+      costPerUnit: req.body.costPerUnit,
+      distributor: req.body.distributor,
+      par: req.body.par,
+      stock: req.body.stock,
+    };
+
+    inventory.items.push(item);
+    await inventory.save();
+
+    res.json(inventory);
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
-
-  const item = {
-    item: req.body.item,
-    onModel: onModel,
-    unitOfMeasure: req.body.unitOfMeasure,
-    qtyPerUnit: req.body.qtyPerUnit,
-    costPerUnit: req.body.costPerUnit,
-    distributor: req.body.distributor,
-    par: req.body.par,
-    stock: req.body.stock,
-  };
-
-  inventory.items.push(item);
-
-  const savedInventory = await inventory.save();
-
-  if (!savedInventory) {
-    return next(new Error("Failed to add item to inventory"));
-  }
-
-  res.status(201).json(savedInventory);
 };
 
 // Get an item from an Inventory
