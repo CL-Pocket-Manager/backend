@@ -19,6 +19,12 @@ router.put(
   inventory_controller.inventory_update_put
 );
 
+// Update items in an inventory
+router.put(
+  "/:inventoryId/update-items",
+  inventory_controller.inventory_update_items
+);
+
 // Delete an inventory
 router.delete("/:inventoryId/delete", inventory_controller.inventory_delete);
 

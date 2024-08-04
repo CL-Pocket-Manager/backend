@@ -61,6 +61,25 @@ exports.inventory_delete = async (req, res, next) => {
   res.json(inventory);
 };
 
+// Update items in an Inventory
+exports.inventory_update_items = async (req, res, next) => {
+  const inventory = await Inventory.findById(req.params.inventoryId);
+
+  if (!inventory) {
+    return next(new Error("Inventory not found"));
+  }
+
+  inventory.items = req.body.items;
+
+  const savedInventory = await inventory.save();
+
+  if (!savedInventory) {
+    return next(new Error("Failed to update items in inventory"));
+  }
+
+  res.json(savedInventory);
+};
+
 // Add an item to an Inventory
 exports.inventory_add_item = async (req, res, next) => {
   const inventoryItem = await Item.findById(req.body.item);

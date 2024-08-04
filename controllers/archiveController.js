@@ -2,8 +2,17 @@ const { Archive } = require("../models/archive");
 
 // Get all Archives
 exports.archive_list = async (req, res, next) => {
-  const archives = await Archive.find({}, "id inventoryName archiveDate items"); // Select only the id, inventoryName, and archiveDate fields
-  res.json(archives);
+  const { inventoryName } = req.query; // Get inventoryName from query parameters
+
+  try {
+    const archives = await Archive.find(
+      { inventoryName }, // Filter by inventoryName
+      "id inventoryName archiveDate items" // Select only the id, inventoryName, archiveDate, and items fields
+    );
+    res.json(archives);
+  } catch (error) {
+    next(error); // Pass any errors to the error handler
+  }
 };
 
 // Create a new Archive
