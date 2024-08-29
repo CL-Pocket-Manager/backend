@@ -15,7 +15,6 @@ exports.item_list_short = async (req, res, next) => {
 // Display detail page for a specific Item.
 exports.item_detail = async (req, res, next) => {
   const item = await Item.findById(req.params.id);
-  console.log(item);
   res.json(item);
 };
 
